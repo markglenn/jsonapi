@@ -1,11 +1,13 @@
 defmodule JsonAPI.Structure.Resource do
+  alias JsonAPI.Structure.{Document, Links, Relationship}
+
   @type t :: %__MODULE__{
           id: String.t(),
           type: String.t(),
           attributes: map | nil,
-          relationships: JsonAPI.Structure.Relationships.relationships_t() | nil,
-          links: JsonAPI.Structure.Links.t() | nil,
-          meta: JsonAPI.Structure.Document.meta_t() | nil
+          relationships: Relationships.relationships_t() | nil,
+          links: Links.t() | nil,
+          meta: Document.meta_t() | nil
         }
 
   @enforce_keys [:id, :type]
@@ -19,8 +21,8 @@ defmodule JsonAPI.Structure.Resource do
       id: id,
       type: type,
       attributes: resource["attributes"],
-      relationships: JsonAPI.Structure.Relationship.parse(resource["relationships"]),
-      links: JsonAPI.Structure.Links.parse(resource["links"]),
+      relationships: Relationship.parse(resource["relationships"]),
+      links: Links.parse(resource["links"]),
       meta: resource["meta"]
     }
   end
