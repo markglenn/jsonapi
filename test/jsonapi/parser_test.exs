@@ -18,7 +18,13 @@ defmodule JsonAPI.ParserTest do
     test "error document" do
       doc = Parser.parse(error_payload())
 
-      IO.inspect(doc)
+      assert [
+               %JsonAPI.Structure.Error{
+                 detail: "First name must contain at least three characters."
+               }
+             ] = doc.errors
+
+      assert is_nil(doc.data)
     end
   end
 
@@ -29,6 +35,9 @@ defmodule JsonAPI.ParserTest do
         "self": "http://example.com/articles",
         "next": "http://example.com/articles?page[offset]=2",
         "last": "http://example.com/articles?page[offset]=10"
+      },
+      "jsonapi": {
+        "version": "1.0"
       },
       "data": [{
         "type": "articles",
